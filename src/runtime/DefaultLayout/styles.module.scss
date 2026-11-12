@@ -1,0 +1,390 @@
+@use '../../ui/styles/mixins' as *;
+
+.layout {
+  height: 100%;
+  background: var(--color-bg-tertiary);
+}
+
+/**
+ * 顶栏与侧栏是同一块底色（对齐火山引擎 AgentKit 控制台）：控制台的「框架」
+ * 整体是一层浅紫灰，内容区才是白色/灰色面板。中间不能有投影或描边——那会把
+ * 一条连续的底色切成两条。
+ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 24px;
+  line-height: 56px;
+  background: var(--color-sider-bg);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.headerLogo {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  /* 品牌字号是唯一尺寸来源：Logo、字形兜底、文字都按 em 跟随它。 */
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.headerLogoIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #1677ff 0%, #0958d9 100%);
+  border-radius: 0.25em;
+}
+
+.headerLogoGlyph {
+  font-size: 0.6em;
+}
+
+.headerLogoText {
+  font-weight: 600;
+  color: var(--color-sider-text);
+}
+
+/* 品牌标识是 64×64 的实底方块，圆角在这里裁切；尺寸与品牌文字一致（1em）。 */
+.headerLogoImg {
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+  border-radius: 0.25em;
+}
+
+.headerRight {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+
+  // 顶栏有一行 `line-height: 56px`，会被继承进这一列；收回正常值，
+  // 否则里面的按钮/下拉会比顶栏还高。
+  line-height: normal;
+}
+
+/* 语言切换：宽度给足「English」+ 地球图标；窄屏收窄一档。 */
+.langSelect {
+  width: 108px;
+}
+
+/* 窄屏 / Wujie 的搜索入口：顶栏放不下输入框时只留一个图标按钮。 */
+.searchTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  transition: background 0.2s;
+
+  &:hover {
+    color: var(--color-primary);
+    background: var(--color-chrome-hover-bg);
+  }
+}
+
+.userButton {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  height: 32px;
+  padding: 0 6px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+
+  &:hover {
+    background: var(--color-chrome-hover-bg);
+  }
+}
+
+.userName {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  white-space: nowrap;
+
+  @media (width < 992px) {
+    display: none;
+  }
+}
+
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  transition: background 0.2s;
+
+  &:hover {
+    color: var(--color-primary);
+    background: var(--color-chrome-hover-bg);
+  }
+}
+
+.innerLayout {
+  min-height: 0;
+}
+
+/**
+ * 侧栏底色对齐火山引擎 AgentKit 控制台：浅紫灰整块，和内容区之间没有描边或投影
+ * ——参考图里侧栏与内容区是硬切的两种底色。
+ */
+.sider {
+  // 品牌只在顶栏出现，侧栏直接从菜单开始；留一点上沿留白，避免分组标题贴边。
+  padding-top: 8px;
+  overflow: auto;
+  background: var(--color-sider-bg) !important;
+  border-right: 0;
+  box-shadow: none;
+
+  /**
+   * antd 默认把 `.ant-layout-sider-children` 设成 `height: 100%`：内容一多，
+   * 菜单就从里面溢出、盖过 aside 的 `padding-bottom`。那个 padding 是给
+   * `position: fixed` 的折叠触发器让位的 —— 被盖掉之后，滚到底部最后一项仍
+   * 压在触发器下面，怎么滚都露不全。
+   *
+   * 改回 `height: auto`（并保留 100% 的 min-height 撑满空白侧栏）：内容自然
+   * 撑高 children，48px 的 padding 就变成滚动内容末尾的留白，滚到底时正好
+   * 停在触发器上沿。
+   */
+  :global(.ant-layout-sider-children) {
+    height: auto;
+    min-height: 100%;
+  }
+}
+
+.menu {
+  flex: 1;
+  border-inline-end: none !important;
+
+  // 叶子项的标签是真 `<Link>`，全局的 `a { color: var(--primary-color) }`
+  // 会压过菜单项继承下来的文字色（选中态、危险态也会一起变主色）。
+  // 下划线必须写进 `:hover` 里：全局 `a:hover` 的特异性比静止态高。
+  :global(.ant-menu-item) a {
+    color: inherit;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  /**
+   * 选中项加粗。
+   *
+   * 颜色与底色由 `createSiderMenuTheme` 的组件令牌给（近黑 + 浅紫灰块），但
+   * antd 没有「选中字重」这个令牌，只能在这里补。只认叶子项（`.ant-menu-item`），
+   * 父级 SubMenu 在子项选中时保持常规字重 —— 参考图里「网关」这类父项没有加粗。
+   */
+  :global(.ant-menu-item-selected) {
+    font-weight: 600;
+  }
+
+  /**
+   * 二级子项挂到父项文字的位置。
+   *
+   * 参考图里「网关总览 / MCP 接入」和父项「网关」的文字在同一条竖线上。rc-menu
+   * 只按 `inlineIndent × level` 写内联 `padding-left`（10 × 2 = 20），不做「挂
+   * 到父项文字」这一步，所以要提到父项文字所在的位置：itemMarginInline 8 +
+   * 子项缩进 36 = 44（再算上字形左边距，正文落在 45）。
+   *
+   * 用 `!important` 是因为 rc-menu 把 padding-left 写成了内联样式，普通规则压不住。
+   * 作用域限定在 `.menu`（展开态）；折叠态是 portal 出去的浮层，带的是
+   * `.menuPopup`，不受这条规则影响，浮层里仍保持紧凑缩进。
+   */
+  :global(.ant-menu-sub) :global(.ant-menu-item),
+  :global(.ant-menu-sub) :global(.ant-menu-submenu-title) {
+    padding-inline-start: 36px !important;
+  }
+}
+
+/**
+ * 折叠态的子菜单浮层。
+ *
+ * 浮层是 portal 到 `body` 的，`.menu` 里的那条规则管不到它；不补这一份，
+ * 浮层里的 `<Link>` 会被全局 `a` 规则染成主色并在 hover 时出现下划线。
+ */
+.menuPopup {
+  :global(.ant-menu-item) a {
+    color: inherit;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  // 与展开态一致：折叠后从浮层进入子项，选中项同样是加粗的近黑文字。
+  :global(.ant-menu-item-selected) {
+    font-weight: 600;
+  }
+
+  // 浮层不是侧栏里的 pill，边距恢复成普通下拉菜单的 16px；侧栏令牌里的
+  // `itemPaddingInline: 8` 也会带进浮层，不补这一条会显得贴边。
+  :global(.ant-menu-item),
+  :global(.ant-menu-submenu-title) {
+    padding-inline: 16px !important;
+  }
+}
+
+/**
+ * 折叠触发器。
+ *
+ * 外层 `.ant-layout-sider-trigger` 是 antd 画的、`position: fixed` 的 48px 条，
+ * 默认底色是白色（`colorBgContainer`）——铺在新侧栏底色上会露出一条白边，
+ * 所以在这里改成侧栏同色；不然滚动时它还要给内容打底，不能透明。
+ * 参考图里没有这条分隔线，内层的 `border-top` 也一并去掉。
+ */
+.sider :global(.ant-layout-sider-trigger) {
+  background: var(--color-sider-bg);
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    color: var(--color-primary);
+    background: var(--color-chrome-hover-bg);
+  }
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: 16px;
+  overflow: hidden;
+  background: var(--color-bg-page);
+}
+
+/**
+ * 页面外壳自己负责背景与内边距。
+ *
+ * 页面外壳（`PageLayout` / `DetailShell` / `ResourceShell` / `PageSurface`）在根节点
+ * 上挂 `data-page-surface="flush"`，内容区就让出内边距与灰底，改由外壳自己负责
+ * gutter 与背景：列表页是整页白底，新建/编辑/详情页是灰底 + 白色页头条 + 白色
+ * 内容卡片。
+ *
+ * 用 data 属性而不是 CSS Module 类名：外壳分布在不同目录，类名会被 hash，只有
+ * 属性是稳定契约。旧浏览器不支持 `:has()` 时会整条忽略，退回「灰底 + 内边距 +
+ * 白色外壳」，不会布局崩坏。
+ */
+.content:has(> [data-page-surface='flush']) {
+  padding: 0;
+  background: var(--color-bg-container);
+}
+
+/* 嵌入式（Wujie）移动端工具条原先靠负 margin 抵消内容区的 12px 内边距；
+   flush 之后内边距为 0，负 margin 会把工具条拉出屏幕，这里改回正向内缩。 */
+.content:has(> [data-page-surface='flush']) .wujieMobileBar {
+  padding: 8px var(--page-gutter);
+  margin: 0 0 12px;
+}
+
+/* ─── 移动端（< 992px） ─────────────────────────────────────────────────── */
+.mobileMenuBtn {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin-right: 8px;
+  font-size: 18px;
+  color: var(--color-text);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+
+  &:active {
+    background: var(--color-chrome-hover-bg);
+  }
+}
+
+.wujieMobileBar {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  align-items: center;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.wujieMobileTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+@include respond-down('lg') {
+  .header {
+    padding: 0 12px;
+  }
+
+  .headerRight {
+    gap: 4px;
+  }
+
+  .headerLogo {
+    font-size: 15px;
+  }
+
+  .langSelect {
+    width: 88px;
+  }
+
+  .content {
+    padding: 12px;
+  }
+
+  .wujieMobileBar {
+    padding: 4px 12px;
+    margin: -12px -12px 12px;
+    background: var(--color-bg-container);
+  }
+}

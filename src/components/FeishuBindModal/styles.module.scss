@@ -1,0 +1,49 @@
+/* ── 飞书绑定弹窗 ── */
+.bindFlow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bindStepTitle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.bindStepIndex {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  background: var(--color-fill-secondary);
+  border-radius: 50%;
+}
+
+.bindHint {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-text-tertiary);
+}
+
+.bindRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.bindRowInput {
+  flex: 1;
+  min-width: 0;
+}

@@ -1,0 +1,7 @@
+// 参考面板的品牌紫。只用于实心图形、聚焦环与「思考」开启态；
+// 正文/边框/背景仍走 var(--color-*) 令牌，暗色自动跟随。
+$agent-accent: #7c3aed;
+$agent-accent-ink: #6d28d9;
+$agent-accent-soft: rgb(124 58 237 / 8%);
+$agent-accent-border: rgb(124 58 237 / 25%);
+$agent-accent-ring: rgb(124 58 237 / 35%);

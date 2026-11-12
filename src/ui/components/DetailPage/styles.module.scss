@@ -1,0 +1,193 @@
+/* 颜色一律写成 `var(--token, 亮色兜底值)`，且兜底值取宿主亮色令牌的**同值**：
+   宿主（apps/main）定义了这套令牌，miniblog 没有、走兜底——两边算出来的颜色因此逐值
+   相同，而宿主切暗色时文字/描边会跟着令牌走。此前这里通篇是硬编码亮色（#262626 /
+   #8c8c8c / #595959），暗色下就是深字压深底，几乎读不出来。 */
+
+.section {
+  margin-bottom: 28px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sectionHeader {
+  padding: 0 0 10px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary, rgb(0 0 0 / 65%));
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--color-border-secondary, #f0f0f0);
+}
+
+/* 段标题与它的操作同一行：标题吃掉剩余宽度（那条分隔线因此仍横贯整行的大部分），
+   操作靠右。没有操作时整行只有标题，画出来与从前逐值相同。 */
+.sectionHeaderRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+/* 这段必须排在 `.sectionHeader` **之后**：两个都是单类选择器，谁赢只看谁在后面。
+   它把标题自己的下边距收掉、改由上面那一行统一给 —— 不收的话行高会被那 16px 撑开，
+   按钮会居中到那段空白上，看着像没对齐。 */
+.sectionHeaderGrow {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+/* 两列 key-value 网格；每列内部 label 固定宽度、value 自适应 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 24px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 7px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.label {
+  /* `min-width` 而不是 `flex: 0 0 96px`：字段名后面还挂着一个问号图标，写死 96px
+     会把「字段名 + 图标」挤在同一格里换行。这里仍从 96px 起算（列不会整体漂移），
+     只有真的放不下时才自然撑开，不截断。 */
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-width: 96px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-text-tertiary, rgb(0 0 0 / 45%));
+}
+
+.value {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+  word-break: break-all;
+}
+
+/* ── Inline value + action buttons ── */
+.valueWithActions {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+}
+
+/* 整块值（计算器面板等）：外层撑满整行，值本身吃掉剩余宽度。
+   `.valueWithActions` 是 inline-flex，会按内容宽度收缩——面板放进去只占半栏，
+   右边空出一大片，看起来像排错了。 */
+.valueWithActionsBlock {
+  display: flex;
+  width: 100%;
+
+  > span:first-child {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.actionBtn {
+  flex-shrink: 0;
+  width: 18px !important;
+  min-width: 18px !important;
+  height: 18px !important;
+  padding: 0 !important;
+
+  // 45% 的黑：腾讯云控制台那套行内图标按钮就是这个灰度——比主文字轻一档，但比
+  // 25% 的提示色实，扫一眼能看见「这里有个可点的动作」。暗色令牌在 tokens.scss。
+  color: var(--color-text-tertiary, rgb(0 0 0 / 45%));
+
+  /* 复制 / 编辑 / 保存 / 取消 是同一排里的 18px 小钮，图标一律 12px。
+     `!important` 是必须的：antd 的 `.ant-btn .anticon` 与这里同特异性、且在运行时
+     注入得更晚，不加就仍按 14px 画（实测过一次：按钮 22px、图标 14px）。 */
+  :global(.anticon) {
+    font-size: 12px !important;
+  }
+
+  &:hover {
+    // `--ant-*` 是死变量：antd 的 cssVar 前缀是 `onex`（见 packages/ui/src/theme/presets.ts），
+    // 全仓没有 `--ant-color-*`。写错了不会报错，只会静默走后面的兜底值，
+    // 于是暗色/换肤下这几处永远停在亮色。
+
+    // 悬停是**中性**的（灰字 + 浅灰底），不是主色蓝：腾讯云那套行内图标按钮悬停时
+    // 只是把灰度提一档，颜色留给主操作，不给一整列复制/铅笔抢视线。
+    color: var(--color-text-secondary, rgb(0 0 0 / 65%)) !important;
+    background: var(--color-bg-tertiary, #f5f5f5) !important;
+  }
+}
+
+.editInput {
+  width: 160px;
+}
+
+/* ── 宽字段（Markdown / 列表 / 结构化编辑器） ── */
+
+/* 标签与值顶部对齐：值那边可能是一整块编辑器，居中会让标签悬在中间 */
+.itemWide {
+  align-items: flex-start;
+}
+
+/* 控件与保存/取消同一行：✓/✗ 必须贴着编辑框右侧，不能掉到框下面。
+   控件宽度由内容决定（`flex: 0 1 auto`），不再拉满整行——一个只有一个标签的
+   多选框铺满上千像素，看起来像排错了。 */
+.wideEditor {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 4px 0 6px;
+}
+
+.wideEditorControl {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.wideEditorActions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 2px;
+  align-items: center;
+
+  /* 与单行控件（small 尺寸，24px）同高：图标和输入框顶部齐平，而不是悬在
+     多行编辑器的中线。 */
+  height: 24px;
+}
+
+@media (width <= 768px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* 悬停才现的操作（`ValueWithActions.revealActionsOnHover`）：列表 ID 旁的复制与名称
+   旁的铅笔。用 opacity 而不是 display，按钮留着的命中区域不跳、键盘也能聚焦到它。 */
+.hoverReveal .actionBtn {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.hoverReveal:hover .actionBtn,
+.hoverReveal:focus-within .actionBtn {
+  opacity: 1;
+}
+
+/* 触屏没有 hover：再藏就变成「点得到但看不见」。 */
+@media (hover: none) {
+  .hoverReveal .actionBtn {
+    opacity: 1;
+  }
+}

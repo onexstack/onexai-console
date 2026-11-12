@@ -1,0 +1,95 @@
+/* 控制台页头的唯一规格来源，见 index.tsx 的组件注释。 */
+
+@use '../../styles/mixins' as *;
+
+.header {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  padding: 16px var(--page-gutter);
+}
+
+/* 外壳（PageLayout / DetailShell / ResourceShell / PageSurface）已经留了
+   同样的左右内边距时用这一档，避免 gutter 叠加。 */
+.noInset {
+  padding-inline: 0;
+}
+
+.titleRow {
+  display: flex;
+  flex: none;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  min-height: 32px;
+}
+
+/* 32×32 点击区；负的左外边距让 16px 图标的光学左缘落回页头的左边缘，
+   与正文、分组标题的竖条对齐（参考图里箭头与「基础配置」竖条是同一条线）。 */
+.back {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin-left: -8px;
+  font-size: 16px;
+  color: var(--color-text-secondary);
+}
+
+.title {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* 标题行右侧的附加内容（见 index.tsx 的 `titleExtra`）。
+   `margin-left: auto` 把它推到行尾；标题仍可收缩（`.title` 已经带 ellipsis）。 */
+.titleExtra {
+  display: flex;
+  flex: 0 1 auto;
+  align-items: center;
+  min-width: 0;
+  margin-left: auto;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--color-text-tertiary);
+}
+
+/* 详情页的第二行：操作按钮。与标题行相隔 12px。 */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding-top: 12px;
+}
+
+@include respond-down('lg') {
+  .header {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+/* 窄屏放不下标题 + 附加内容时换行：附加内容独占一行、左对齐，不再顶着标题。 */
+@include respond-down('md') {
+  .titleRow {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .titleExtra {
+    flex: 1 1 100%;
+    margin-left: 0;
+  }
+}

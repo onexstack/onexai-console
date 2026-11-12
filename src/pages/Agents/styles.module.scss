@@ -1,0 +1,35 @@
+/* 智能体列表的页面级布局。
+   工具栏两行的间距/内边距直接对齐 `ResourcePage/styles.module.scss` 的
+   `.toolbar1` / `.toolbar2`，两页在同一控制台里切换时不会出现行高跳动。 */
+
+/* ── Row 1: 主操作（左）+ 页签（右） ── */
+.toolbar {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 6px;
+}
+
+/* ── Row 2: 标准搜索栏（撑满）+ 刷新 / 导出 / 设置 ── */
+.searchRow {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* 行内危险动作（删除）：与通用列表页 `ResourcePage` 同一套外观。 */
+.actionDangerLink {
+  font-size: 13px;
+  color: var(--color-error, #ff4d4f);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,100 @@
+@use '../../../ui/styles/mixins' as *;
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+/* 固定的 group / from.kind：直接以文本展示，不占输入框的视觉权重。 */
+.fixedGroup,
+.fixedKind {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: 32px;
+  font-family: var(--font-family-code, monospace);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.fixedGroup {
+  width: 130px;
+}
+
+.fixedKind {
+  width: 56px;
+}
+
+.kind {
+  flex: 0 0 160px;
+  min-width: 0;
+}
+
+.grow {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.preview {
+  margin-top: 4px;
+}
+
+.previewLabel {
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.code {
+  padding: 8px 10px;
+  margin: 0;
+  overflow: auto;
+  font-family: var(--font-family-code, monospace);
+  font-size: 12px;
+  line-height: 18px;
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  border-radius: 6px;
+}
+
+/* 窄屏：行内控件换行，名称输入框占满一行。 */
+@include respond-down('md') {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .kind {
+    flex: 1 1 calc(50% - 4px);
+  }
+
+  .grow {
+    flex-basis: calc(100% - 40px);
+  }
+}

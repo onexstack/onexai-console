@@ -1,0 +1,293 @@
+@use '../../../ui/styles/mixins' as *;
+@use './tokens' as *;
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-top: 10px;
+  background: #8b5cf6;
+  border-radius: 50%;
+}
+
+.avatarMine {
+  background: #1677ff;
+}
+
+.avatarText {
+  font-size: 11px;
+  line-height: 1;
+  color: #fff;
+}
+
+.wrapper {
+  // 占满头像之外的全部宽度：直聊与调试台共用同一条消息，主栏变宽时内容
+  // 不再被固定 max-width 截在半途。
+  flex: 1;
+  min-width: 0;
+}
+
+.bubble {
+  padding: 10px 14px;
+  overflow-wrap: anywhere;
+  background: var(--color-bg-secondary);
+  border-radius: 12px;
+  border-top-left-radius: 4px;
+}
+
+.mine .bubble {
+  background: var(--color-bubble-sent);
+}
+
+.userText {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text);
+  white-space: pre-wrap;
+}
+
+.markdown {
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.pendingIcon {
+  color: var(--color-text-tertiary);
+}
+
+// ─── 思考过程 ───────────────────────────────────────────────────────────────
+
+.reasoning {
+  padding-left: 10px;
+  margin-bottom: 8px;
+  border-left: 2px solid var(--color-border);
+}
+
+.reasoningHead {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+
+  &:hover {
+    color: var(--color-text-secondary);
+  }
+}
+
+.reasoningChevron {
+  font-size: 9px;
+  transition: transform var(--transition-fast, 0.2s ease);
+}
+
+.reasoningChevronClosed {
+  transform: rotate(-90deg);
+}
+
+.reasoningBody {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+// ─── 工具步骤 ───────────────────────────────────────────────────────────────
+
+.steps {
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  background: var(--color-bg-tertiary);
+  border-radius: 8px;
+}
+
+.stepsTitle {
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+}
+
+.step {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.stepName {
+  font-family: 'SF Mono', Consolas, Menlo, monospace;
+}
+
+.stepOk {
+  color: var(--color-success);
+}
+
+.stepFailed {
+  color: var(--color-error);
+}
+
+// ─── 图片/附件 ──────────────────────────────────────────────────────────────
+
+.images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.attachment {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  max-width: 100%;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-container);
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
+
+  em {
+    flex-shrink: 0;
+    font-style: normal;
+    color: var(--color-text-tertiary);
+  }
+}
+
+.attachmentName {
+  @include ellipsis;
+
+  min-width: 0;
+}
+
+// ─── 错误/状态 ──────────────────────────────────────────────────────────────
+
+.error {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--color-error);
+}
+
+.note {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.retry {
+  margin-top: 8px;
+}
+
+// ─── footer ─────────────────────────────────────────────────────────────────
+
+.footer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 18px;
+  margin-top: 4px;
+}
+
+.usage {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: auto;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.row:hover .actions,
+.row:focus-within .actions {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .actions {
+    opacity: 1;
+  }
+}
+
+.time {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+// ─── 审批卡 ─────────────────────────────────────────────────────────────────
+
+.approval {
+  padding: 12px 14px;
+  margin: 0 0 14px 32px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.approvalTitle {
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-warning);
+}
+
+.approvalItem {
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.approvalArgs {
+  max-height: 160px;
+  padding: 8px;
+  margin: 6px 0 0;
+  overflow: auto;
+  font-size: 11px;
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  border-radius: 6px;
+}
+
+.approvalQuestion {
+  margin-bottom: 6px;
+}
+
+@include respond-down('md') {
+  .bubble {
+    padding: 8px 12px;
+  }
+
+  .approval {
+    margin-left: 0;
+  }
+}

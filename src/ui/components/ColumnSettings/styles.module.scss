@@ -1,0 +1,66 @@
+.colSettingsSection {
+  margin-bottom: 18px;
+}
+
+.colSettingsSectionTitle {
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+}
+
+.colSettingsList {
+  overflow: hidden;
+  border: 1px solid var(--color-border-secondary, #f0f0f0);
+  border-radius: 6px;
+}
+
+.colSettingsRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 14px;
+  user-select: none;
+  background: var(--color-bg-container, #fff);
+  border-bottom: 1px solid var(--color-border-secondary, #f0f0f0);
+  transition: background 0.1s;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: var(--color-fill-secondary, #fafafa);
+  }
+}
+
+.colSettingsRowDragging {
+  opacity: 0.5;
+}
+
+.colSettingsRowOver {
+  border-top: 2px solid var(--color-primary, #1677ff);
+}
+
+.dragHandle {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--color-text-quaternary, rgb(0 0 0 / 25%));
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.dragPlaceholder {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 14px;
+}
+
+.colName {
+  flex: 1;
+  font-size: 13px;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+}

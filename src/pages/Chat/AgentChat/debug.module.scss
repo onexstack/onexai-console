@@ -1,0 +1,356 @@
+@use '../../../ui/styles/mixins' as *;
+@use './tokens' as *;
+
+// ─── 页面壳 ─────────────────────────────────────────────────────────────────
+
+.panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.notice {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border-secondary);
+}
+
+.noticeStrong {
+  color: var(--color-text);
+}
+
+// ─── 空态 ───────────────────────────────────────────────────────────────────
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 32px 8px;
+  color: var(--color-text-secondary);
+}
+
+.emptyTitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+// ─── 中栏 / 右栏 ────────────────────────────────────────────────────────────
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sidePane {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.sideSummary {
+  flex-shrink: 0;
+  padding: 0 16px 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--color-text-tertiary);
+}
+
+.sideBody {
+  flex: 1;
+  min-height: 0;
+  padding: 0 16px 16px;
+  container-type: inline-size;
+  overflow-y: auto;
+}
+
+// ─── 组合配置 ───────────────────────────────────────────────────────────────
+
+.config {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.configGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.fieldLabel {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+}
+
+.count {
+  padding: 0 6px;
+  font-size: 10px;
+  font-style: normal;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-tertiary);
+  border-radius: 999px;
+}
+
+.select {
+  width: 100%;
+}
+
+.optionDesc {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.configFoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.identityNote {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+
+.identityNoteText {
+  @include ellipsis;
+
+  font-size: 11px;
+}
+
+.catalogHint {
+  font-size: 11px;
+}
+
+// ─── 提示词顺序 ─────────────────────────────────────────────────────────────
+
+.promptList {
+  // 与模型/MCP/命令等字段一致：不要外层子卡片，只保留纵向排列与间距。
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.promptRow {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+
+.promptIndex {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-tertiary);
+  border-radius: 999px;
+}
+
+.promptName {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 12px;
+
+  > span:first-child {
+    @include ellipsis;
+  }
+}
+
+.promptDesc {
+  @include ellipsis;
+
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+}
+
+.addPrompt {
+  width: 100%;
+}
+
+// ─── 日志抽屉 ───────────────────────────────────────────────────────────────
+
+.drawer {
+  :global(.ant-drawer-body) {
+    padding-top: 8px;
+  }
+}
+
+.logMeta {
+  margin-bottom: 8px;
+}
+
+.logComposition {
+  font-size: 11px;
+}
+
+.logTimeline {
+  margin-top: 12px;
+}
+
+.logTurn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.logTurnHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.logRunID {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+}
+
+.logTime {
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+}
+
+.logError {
+  padding: 6px 8px;
+  font-size: 12px;
+  color: var(--color-error);
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.logSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  font-size: 11px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.logStep {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.stepOk {
+  color: var(--color-success);
+}
+
+.stepFail {
+  color: var(--color-error);
+}
+
+.logResult {
+  @include ellipsis;
+
+  flex-basis: 100%;
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+}
+
+.logUsage {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.logEvents {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+  font-size: 11px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.logEventsTitle {
+  margin-bottom: 2px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.logEvent {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  color: var(--color-text-tertiary);
+
+  > span:first-child {
+    font-variant-numeric: tabular-nums;
+  }
+
+  > span:nth-child(2) {
+    color: var(--color-text-secondary);
+  }
+}
+
+// 右栏被拖窄时（默认 400px）两列 Select 会挤到不可读，按容器宽度降为单列。
+@container (max-width: 520px) {
+  .configGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@include respond-down('md') {
+  .configGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .notice {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .sideSummary {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .sideBody {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}

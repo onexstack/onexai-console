@@ -1,0 +1,93 @@
+/* 策略页「左列表 + 右详情」版式。
+   桌面 300px 侧栏；窄屏上下堆叠，详情在上、列表在下会让每次选择都跳走，
+   所以移动端仍是列表在上。 */
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.railGroup {
+  justify-content: flex-start;
+  padding-inline: 4px;
+  color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.65));
+}
+
+.railLoading {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.railList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: calc(100vh - 340px);
+  overflow-y: auto;
+}
+
+.railItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.railItem:hover {
+  background: var(--ant-color-fill-tertiary, rgba(0, 0, 0, 0.04));
+}
+
+.railItemActive,
+.railItemActive:hover {
+  background: var(--ant-color-primary-bg, #e6f4ff);
+}
+
+.railItemMain {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.railTags {
+  font-size: 12px;
+}
+
+.railItemActions {
+  flex-shrink: 0;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detailTitle {
+  margin: 0;
+}
+
+.detailMeta {
+  margin-top: 4px;
+}

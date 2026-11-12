@@ -1,0 +1,83 @@
+@use '../../styles/mixins' as *;
+
+/* 控制台页面外壳的唯一规格来源，见 index.tsx 的组件注释。
+   整页白底，水平内缩只由 `.container` 的 `--page-gutter` 提供；标题走
+   `../PageHeader`，表格卡直接铺在白底上。 */
+
+/* ── Page Container ── */
+.container {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 var(--page-gutter) 24px;
+  overflow: hidden;
+  background: var(--color-bg-container, #fff);
+}
+
+/* ── 标题下方的操作区 ── */
+.toolbar {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 6px;
+}
+
+/* ── Card (wraps Table) ── */
+.card {
+  flex: 1 1 0%;
+  min-height: 0;
+  overflow: auto;
+  background: var(--color-bg-container, #fff);
+  border: 1px solid var(--color-border-secondary, #f0f0f0);
+  border-radius: 8px;
+
+  /* compact global table style */
+  :global(.ant-table) {
+    font-size: 13px;
+  }
+
+  :global(.ant-table-cell) {
+    padding: 5px 10px !important;
+    font-size: 13px !important;
+  }
+
+  :global(.ant-table-thead .ant-table-cell) {
+    padding: 7px 10px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+    background: var(--color-fill-secondary, #fafafa) !important;
+  }
+
+  :global(.ant-table-row) {
+    line-height: 1.4;
+  }
+
+  :global(.ant-table table) {
+    table-layout: auto;
+  }
+}
+
+/* 宽松档的单元格内边距。
+   **必须与 `.card` 同文件**：两条规则都是 `.ant-table-cell { … !important }`、特异性
+   相同，胜负只由源码顺序决定。拆到两个文件后顺序取决于 ESM 求值顺序，默认的 10px
+   会被 5px 悄悄盖掉——而没有任何测试会因此变红。 */
+.cardLoose {
+  :global(.ant-table-cell) {
+    padding: 10px !important;
+  }
+}
+
+/* 移动端：卡片圆角收一档，多出 4px 可用宽度；水平 gutter 由 `--page-gutter` 统一。 */
+@include respond-down('md') {
+  .toolbar {
+    padding-bottom: 4px;
+  }
+
+  .card {
+    border-radius: 6px;
+  }
+}

@@ -1,0 +1,57 @@
+/* 详情页外壳的唯一规格来源，见 index.tsx 的组件注释。
+   页头规格在 `../PageHeader`；灰底、滚动区、内容卡与响应式在
+   `@/ui/styles/mixins` 的 `page-header-bar` / `page-scroll-body` / `page-card-surface`。 */
+
+@use '../../styles/mixins' as *;
+
+.shell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+
+  /* 用 token 而不是硬编码 #fff：亮色下解析结果与旧版逐值相同，暗色下跟随
+     `--color-bg-page`，否则详情页在暗色里是一块白板。 */
+  background: var(--color-bg-page);
+}
+
+/* 白色页头条：与内容卡片一起构成「双卡片」。 */
+.headerBar {
+  @include page-header-bar;
+}
+
+/* 标题卡与内容卡之间的操作工具条：铺在灰色页面底上，左右与内容卡对齐，
+   位于滚动区之外，不随正文滚动（参考腾讯云列表页的按钮区域）。 */
+.toolbar {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 16px var(--page-gutter) 0;
+
+  @include respond-down('lg') {
+    padding-top: 12px;
+  }
+}
+
+/* 唯一滚动区；页头与工具条固定在它之外。 */
+.body {
+  @include page-scroll-body;
+}
+
+/* 白色内容卡片：Tabs / 详情字段都落在这里。 */
+.panel {
+  @include page-card-surface;
+}
+
+.loading {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 64px 0;
+}

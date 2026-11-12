@@ -1,0 +1,325 @@
+/* 页面容器、页面标题、表格卡这三样已抽到 `../ResourceShell/`（宿主 `/admin/*` 的
+   其余几页也消费它，规格只该有一处）。这里只留 ResourcePage 自己的工具栏、搜索、
+   分页、列设置与页签视图。 */
+
+/* 工具栏 / 搜索栏的水平内缩由 `ResourceShell` 的 `--page-gutter` 统一提供，
+   这里只负责上下间距，否则会和标题的左边缘错开两份 gutter。 */
+
+/* ── Toolbar Row 1: batch-actions + view-toggle ── */
+.toolbar1 {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 6px;
+}
+
+.toolbar1Left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+
+  /* Disabled buttons keep the container background (font color unchanged) */
+  :global(.ant-btn:disabled) {
+    background: var(--color-bg-container, #fff) !important;
+  }
+}
+
+.selectedCount {
+  padding: 0 2px;
+  font-size: 12px;
+  color: var(--color-text-secondary, rgb(0 0 0 / 65%));
+}
+
+/* ── View toggle (列表 / 页签) ── */
+.viewToggle {
+  display: flex;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border, #d9d9d9);
+  border-radius: 6px;
+}
+
+.viewBtn {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+  white-space: nowrap;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: var(--color-fill-secondary, #fafafa);
+  }
+}
+
+.viewBtnActive {
+  color: var(--color-primary, #1677ff);
+  background: var(--color-primary-bg, #e6f4ff);
+}
+
+/* ── Toolbar Row 2: search + icons ── */
+.toolbar2 {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* 分页条的样式已随组件搬到 ../Pagination/styles.module.scss（通知中心等非 CRUD
+   列表也用它，两条路径共用一份）。这里不再保留副本。 */
+
+/* ── Tab view (52.png) ── */
+.tabView {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tabHeader {
+  display: flex;
+  flex-shrink: 0;
+  align-items: stretch;
+  background: var(--color-bg-container, #fff);
+  border-bottom: 1px solid var(--color-border-secondary, #f0f0f0);
+}
+
+.tabList {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+
+  /* Hide scrollbar on tab list */
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tabItem {
+  display: flex;
+  flex-shrink: 0;
+  gap: 5px;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+  white-space: nowrap;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    color: var(--color-primary, #1677ff);
+    background: var(--color-primary-bg, #e6f4ff);
+  }
+}
+
+.tabItemActive {
+  font-weight: 500;
+  color: var(--color-primary, #1677ff);
+  border-bottom-color: var(--color-primary, #1677ff);
+}
+
+.tabDetail {
+  flex: 1;
+  padding: 0 24px 24px;
+  overflow: auto;
+}
+
+/* ── Table cell helpers ── */
+
+/* 内容宽度模式（`ResourceDescriptor.autoColumnWidth`）：表格宽度 = 各列内容宽度之和。
+ *
+ * antd 给 `scroll.x` 的表格写了**内联**的 `min-width: 100%`：列宽虽然按内容算，
+ * 但整张表仍被拉到容器宽，多出来的宽度再按内容摊回各列 —— 那是「平均分」，不是
+ * 「一列就是它最宽那一格那么宽」。内联样式只能靠 `!important` 压过去（与
+ * `/admin/limits` 的那张表同一处、同一条）。压掉之后：内容铺不满时右边留白，
+ * 内容放不下时在表格内部横向滚动。
+ *
+ * 表头与汇总行是 rc-table 单独渲染的两张表（`FixedHolder`，`sticky` 打开时必有），
+ * 它们**也**被写了同样的内联 `min-width: 100%`。只压表体的话，窄表会出现「表头被
+ * 拉满、列被摊宽，表体按内容宽」——两者从第一列之后就不再对齐。 */
+.contentWidthTable {
+  :global(.ant-table-content > table),
+  :global(.ant-table-body > table),
+  :global(.ant-table-header > table),
+  :global(.ant-table-summary > table) {
+    min-width: 0 !important;
+  }
+}
+
+.idLink {
+  font-size: 13px;
+  color: var(--color-primary, #1677ff);
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.idText {
+  font-size: 13px;
+  color: var(--color-primary, #1677ff);
+}
+
+.actionCell {
+  display: flex;
+  align-items: center;
+
+  /* 列本身 fixed 在最右；`align: 'right'` 只设 text-align，块级 flex 容器要
+     自己把内容推到右端，否则按钮仍从列左侧开始排。 */
+  justify-content: flex-end;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.actionLink {
+  font-size: 13px;
+  color: var(--color-primary, #1677ff);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.actionDangerLink {
+  font-size: 13px;
+  color: var(--color-error, #ff4d4f);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.actionSep {
+  margin: 0 6px;
+  color: var(--color-border, #d9d9d9);
+}
+
+/* ─── 移动端卡片列表 ─────────────────────────────────────────────────────
+   `ResourceShell` 的白卡已经提供了外框，这里只画行与分隔线，不再套一层卡片
+   （两层描边在 320px 下会明显缩小可用宽度）。 */
+.mobileCards {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileCard {
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border-light);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+}
+
+.mobileCardHead {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.mobileCardTitle {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.mobileCardTitleLink {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: none;
+  border: 0;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+/* 标题回退到主键列时（显示名已合并进 ID/名称），卡片标题是两行纯文本。 */
+.mobileCardTitleStack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mobileCardTitleSub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.mobileCardActions {
+  flex: 0 0 auto;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.mobileCardFields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0 0;
+}
+
+.mobileCardField {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 13px;
+  line-height: 1.5;
+
+  dt {
+    flex: 0 0 auto;
+    min-width: 52px;
+    color: var(--color-text-tertiary);
+  }
+
+  dd {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    color: var(--color-text-secondary);
+    overflow-wrap: anywhere;
+  }
+}
+
+.mobileCardLoading,
+.mobileCardEmpty {
+  padding: 40px 16px;
+}

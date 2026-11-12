@@ -1,0 +1,371 @@
+/* 高级设置：与普通字段之间留一段呼吸，折叠面板本身沿用 antd 的边框。 */
+.advanced {
+  margin-top: 12px;
+}
+
+/* 字段下方的说明：火山引擎表单里的提示是一行小灰字 + 信息图标，而不是悬浮问号。 */
+.hint {
+  display: inline-flex;
+  gap: 4px;
+  align-items: flex-start;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-tertiary);
+}
+
+.hintIcon {
+  flex: none;
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+/* 字段名 + 问号：问号由 FieldHint 画，间距与 antd `Form.Item tooltip` 一致。 */
+.labelWithHint {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* 下拉里「品牌图标 + 提供方名」。 */
+.optionWithIcon {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* 状态开关：开关 + 右侧文案，对齐火山引擎表单里「开关 启用」的版式。 */
+.switchControl {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.switchLabel {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+/* 勾选列表（如 Webhook 事件）：选项横排共享一行，说明画在各自标签下方。 */
+.checklist {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+}
+
+.checklistItem {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  /* 平分一行；容器变窄时按 min-width 自动换行，不挤压说明文字。 */
+  flex: 1 1 240px;
+  min-width: 0;
+  margin-inline-start: 0;
+}
+
+.checklistText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.checklistDesc {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+/* 需审批的工具：按 MCP 分组，每组列出「工具名 + 描述」的勾选行。 */
+.approvalTools {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.approvalGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.approvalGroup {
+  padding: 12px 14px;
+  background: var(--color-bg-container, #fff);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+.approvalGroupHead {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.approvalGroupName {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.approvalTag {
+  flex: none;
+  margin-inline-start: 0;
+}
+
+/* antd Checkbox 的 wrapper 本身是 inline-flex；这里改成整行、顶部对齐，
+   描述折行时勾选框不会跟着跑到中间。 */
+.approvalToolRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 6px 0;
+  margin-inline-start: 0;
+}
+
+.approvalToolText {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.approvalToolName {
+  font-family: var(--font-family-code, monospace);
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.approvalToolDesc {
+  flex-basis: 100%;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.approvalEmpty {
+  padding: 2px 0 2px 24px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-tertiary);
+}
+
+.approvalError {
+  padding: 4px 0 0 24px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-error);
+  overflow-wrap: anywhere;
+}
+
+.approvalManual {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.approvalManualLabel {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.approvalManualSelect {
+  max-width: 640px;
+}
+
+/* 标签：一行一个键值对，键、值各占半行，右侧删除；底部是添加入口和余量。
+   版式对齐火山引擎标签设置。 */
+.labels {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.labelRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.labelSelect {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.labelDelete {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+
+  &:hover {
+    color: var(--color-error);
+    background: var(--color-bg-tertiary);
+  }
+
+  &:disabled {
+    color: var(--color-text-quaternary);
+    cursor: not-allowed;
+    background: transparent;
+  }
+}
+
+.labelFooter {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.addLabel {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--color-primary);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+
+  &:hover {
+    color: var(--color-primary-hover);
+  }
+
+  &:disabled {
+    color: var(--color-text-quaternary);
+    cursor: not-allowed;
+  }
+}
+
+.addLabelIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border-radius: 50%;
+
+  .addLabel:disabled & {
+    color: var(--color-text-quaternary);
+    background: var(--color-bg-tertiary);
+  }
+}
+
+.labelDivider {
+  width: 1px;
+  height: 14px;
+  background: var(--color-border);
+}
+
+.labelRemaining {
+  color: var(--color-text-tertiary);
+
+  strong {
+    font-weight: 500;
+    color: var(--color-text);
+  }
+}
+
+// 命令候选：命令名与描述分两栏；描述单行省略，悬停 title 看全文。
+.commandOption {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.commandOptionName {
+  flex: none;
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+  white-space: nowrap;
+}
+
+.commandOptionDesc {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  color: var(--color-text-secondary, rgb(0 0 0 / 65%));
+  white-space: nowrap;
+}
+
+/*
+ * JSON 控件 + 右侧动作按钮（如授权生成器）：文本框占满剩余宽度、按钮不伸缩。
+ * 用 flex-wrap 而不是媒体查询：宽度不够时按钮自然掉到下一行，移动端/窄栏通用。
+ */
+.controlWithAction {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+
+  > button {
+    flex: none;
+  }
+}
+
+.jsonText {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+/*
+ * 引用项的类型标签（Webhook 的 OnStart / OnEnd）。
+ * 候选里跟在名字后面，已选标签里放进 antd 的 chip 内部——两种容器都要紧凑，
+ * 所以不靠字号继承，直接压小行高与外边距。
+ */
+.refBadges {
+  display: inline-flex;
+  flex: none;
+  gap: 4px;
+  align-items: center;
+  margin-inline-start: 6px;
+}
+
+.refBadge {
+  margin: 0;
+  padding: 0 5px;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+/* 只读行里的角标：外层已经是 Tag，用弱化文字避免标签套标签。 */
+.refBadgeText {
+  margin-inline-start: 6px;
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}

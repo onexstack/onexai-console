@@ -1,0 +1,34 @@
+.option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.titleText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.suffix {
+  flex: none;
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+}
+
+.description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}

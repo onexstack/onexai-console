@@ -1,0 +1,343 @@
+// ============================================================================
+// Markdown 排版（bytemd Viewer）
+// ----------------------------------------------------------------------------
+// 颜色一律走 `src/ui/styles/tokens.scss` 的 CSS 变量，暗色自动跟随。bytemd 自己
+// 不提供 `.markdown-body` 的任何排版，这一节是必需的，不是锦上添花。
+// 颜色令牌带兜底值：万一被嵌到没有 tokens 的宿主里，也不会渲染成透明。
+// ============================================================================
+
+$text: var(--color-text, rgb(0 0 0 / 88%));
+$text-secondary: var(--color-text-secondary, rgb(0 0 0 / 65%));
+$border: var(--color-border, #d9d9d9);
+$border-light: var(--color-border-light, #f0f0f0);
+$bg-secondary: var(--color-bg-secondary, #fafafa);
+$bg-tertiary: var(--color-bg-tertiary, #f5f5f5);
+$primary: var(--color-primary, #1677ff);
+$code-bg: var(--color-code-bg, #f6f8fa);
+$code-border: var(--color-code-border, #e2e8f0);
+
+.markdown-body {
+  --md-line-height: 1.7;
+  --md-block-gap: 0.7em;
+  --md-li-gap: 0.2em;
+  --md-loose-gap: 0.8em;
+
+  font-size: 14px;
+  line-height: var(--md-line-height);
+  color: $text;
+  overflow-wrap: anywhere;
+
+  // 正文块嵌进气泡时，首末元素的外边距会让上下各多出一截空白。
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0.7em 0 0.4em;
+    font-weight: 600;
+    line-height: 1.4;
+    color: $text;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 19px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: 15px;
+  }
+
+  p {
+    margin: var(--md-block-gap) 0;
+  }
+
+  a {
+    color: $primary;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  strong {
+    font-weight: 600;
+  }
+
+  code,
+  kbd {
+    padding: 0.1em 0.35em;
+    margin: 0 0.1em;
+    font-family: 'SF Mono', Consolas, Menlo, monospace;
+    font-size: 0.9em;
+    background: $bg-tertiary;
+    border: 1px solid $border-light;
+    border-radius: 4px;
+  }
+
+  pre {
+    padding: 14px 16px;
+    margin: var(--md-loose-gap) 0;
+    overflow-x: auto;
+    background: $code-bg;
+    border: 1px solid $code-border;
+    border-radius: 8px;
+
+    code {
+      padding: 0;
+      margin: 0;
+      font-size: 13px;
+      background: transparent;
+      border: none;
+    }
+  }
+
+  // 代码块复制按钮的定位容器。按钮浮在 `pre` 的横向滚动区之外。
+  .markdown-code-block {
+    position: relative;
+    margin: var(--md-loose-gap) 0;
+
+    > pre {
+      margin: 0;
+    }
+  }
+
+  .markdown-code-copy {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    font-size: 13px;
+    line-height: 1;
+    color: $text-secondary;
+    pointer-events: none;
+    cursor: pointer;
+    background: $code-bg;
+    border: 1px solid $code-border;
+    border-radius: 6px;
+    opacity: 0;
+    transition:
+      opacity 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease;
+
+    svg {
+      width: 1em;
+      height: 1em;
+      fill: currentcolor;
+    }
+
+    &:hover {
+      color: $primary;
+      border-color: $primary;
+    }
+
+    &:focus-visible {
+      pointer-events: auto;
+      outline: 2px solid $primary;
+      outline-offset: 1px;
+      opacity: 1;
+    }
+
+    @media (hover: none) {
+      pointer-events: auto;
+      opacity: 1;
+    }
+  }
+
+  .markdown-code-block:hover .markdown-code-copy {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  blockquote {
+    padding: 4px 16px;
+    margin: var(--md-loose-gap) 0;
+    color: $text-secondary;
+    border-left: 3px solid $border;
+
+    p {
+      margin: 0.3em 0;
+    }
+  }
+
+  ul,
+  ol {
+    padding-left: 1.6em;
+    margin: var(--md-block-gap) 0;
+
+    li {
+      margin: var(--md-li-gap) 0;
+    }
+  }
+
+  ul {
+    list-style: disc;
+
+    &.contains-task-list {
+      padding-left: 0.4em;
+      list-style: none;
+    }
+
+    input[type='checkbox'] {
+      margin-right: 0.4em;
+      accent-color: $primary;
+    }
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  hr {
+    height: 1px;
+    margin: var(--md-loose-gap) 0;
+    background: $border;
+    border: none;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    margin: var(--md-loose-gap) 0;
+    overflow-x: auto;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 6px 13px;
+      border: 1px solid $border;
+    }
+
+    th {
+      font-weight: 600;
+      background: $bg-secondary;
+    }
+
+    tr:nth-child(2n) {
+      background: $bg-secondary;
+    }
+  }
+
+  .katex-display {
+    padding: 0.2em 0;
+    overflow: auto hidden;
+  }
+}
+
+// ─── 暗色：highlight.js 的 github 主题 ─────────────────────────────────────
+// github.css 是浅色主题，暗色下必须整体替换主要令牌色。`.hljs-*` 是第三方类名。
+[data-theme='dark'] {
+  .markdown-body {
+    /* stylelint-disable selector-class-pattern */
+    .hljs {
+      color: #c9d1d9;
+      background: transparent;
+    }
+
+    .hljs-doctag,
+    .hljs-keyword,
+    .hljs-meta .hljs-keyword,
+    .hljs-template-tag,
+    .hljs-template-variable,
+    .hljs-type,
+    .hljs-variable.language_ {
+      color: #ff7b72;
+    }
+
+    .hljs-title,
+    .hljs-title.class_,
+    .hljs-title.function_ {
+      color: #d2a8ff;
+    }
+
+    .hljs-attr,
+    .hljs-attribute,
+    .hljs-literal,
+    .hljs-meta,
+    .hljs-number,
+    .hljs-operator,
+    .hljs-variable,
+    .hljs-selector-attr,
+    .hljs-selector-class,
+    .hljs-selector-id {
+      color: #79c0ff;
+    }
+
+    .hljs-regexp,
+    .hljs-string,
+    .hljs-meta .hljs-string {
+      color: #a5d6ff;
+    }
+
+    .hljs-built_in,
+    .hljs-symbol {
+      color: #ffa657;
+    }
+
+    .hljs-comment,
+    .hljs-code,
+    .hljs-formula {
+      color: #8b949e;
+    }
+
+    .hljs-name,
+    .hljs-quote,
+    .hljs-selector-tag,
+    .hljs-selector-pseudo {
+      color: #7ee787;
+    }
+
+    .hljs-subst {
+      color: #c9d1d9;
+    }
+
+    .hljs-section {
+      color: #1f6feb;
+    }
+
+    .hljs-bullet {
+      color: #f2cc60;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: 700;
+    }
+    /* stylelint-enable selector-class-pattern */
+  }
+}

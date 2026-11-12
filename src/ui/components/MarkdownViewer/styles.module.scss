@@ -1,0 +1,5 @@
+// 渲染器外壳。版式在 `src/styles/markdown.scss` 的全局 `.markdown-body`：
+// bytemd 的 Viewer 自带这个类名，全局规则才压得住它。
+.markdownBody {
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,57 @@
+@use '../../styles/mixins' as *;
+
+/* 分页条：共 N 条（左）+ 翻页控件（右 / 中）。
+   经典页码式，两条使用路径（表格底栏 / 卡片流吸底条）共用这一份。
+   ⚠️ 根类名 `.pagination` 是 e2e 的选择器契约（`[class*="__pagination___"]`），不要改名。 */
+.pagination {
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0 10px;
+}
+
+/* 卡片流：整条居中（共 N 条 与翻页控件作为一组居中） */
+.paginationCenter {
+  justify-content: center;
+}
+
+.paginationTotal {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgb(0 0 0 / 65%));
+  white-space: nowrap;
+}
+
+.paginationRight {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  /* antd 的 pager 自带外边距，放进 flex 里会与 gap 叠加 */
+  :global(.ant-pagination) {
+    margin: 0;
+  }
+
+  /* 首页/末页是普通 Button，圆角对齐页码项（组件 token 里是 6） */
+  :global(.ant-btn) {
+    border-radius: 6px;
+  }
+}
+
+.paginationLabel {
+  font-size: 12px;
+  color: var(--color-text-secondary, rgb(0 0 0 / 65%));
+  white-space: nowrap;
+}
+
+@include respond-down('md') {
+  .pagination {
+    gap: 8px;
+    padding: 8px 0 calc(8px + var(--safe-bottom));
+  }
+
+  .paginationRight {
+    gap: 4px;
+  }
+}

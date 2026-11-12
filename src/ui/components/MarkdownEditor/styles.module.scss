@@ -1,0 +1,16 @@
+// bytemd 的编辑器根节点自带固定 300px 高度与直角边框；这里统一高度并跟随
+// 控制台的表单宽度/圆角。
+.editor {
+  width: 100%;
+  max-width: 640px;
+
+  :global(.bytemd) {
+    height: 380px;
+    border-radius: 8px;
+  }
+}
+
+.disabled {
+  opacity: 0.65;
+  pointer-events: none;
+}

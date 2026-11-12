@@ -1,0 +1,351 @@
+@use '../../ui/styles/mixins' as *;
+
+/* 账号页板块的外壳：AccountPage 的 `.content` 已提供内边距与滚动，这里只排间距。 */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── 卡片头 ── */
+
+/* 与账号页其它板块（SecurityCard）对齐：标题 16px/600、无头部 divider、
+   横向 20px。列表卡 body 由组件里的 `styles.body.padding = 0` 覆盖，不受影响。 */
+.card {
+  :global(.ant-card-head) {
+    min-height: 0;
+    padding: 18px 20px 6px;
+    border-bottom: 0;
+  }
+
+  :global(.ant-card-head-title) {
+    padding: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+}
+
+.myCard {
+  :global(.ant-card-body) {
+    padding: 12px 20px 16px;
+  }
+}
+
+/* ── 我的飞书 ── */
+
+.myFeishu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.myIdentity {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.myName {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.myMeta {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.myDesc {
+  max-width: 640px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.myActions {
+  margin-left: auto;
+}
+
+/* 解绑确认弹窗里的多段说明。 */
+.confirmText p {
+  margin: 0 0 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@include respond-down('md') {
+  .myFeishu {
+    align-items: flex-start;
+  }
+
+  .myActions {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* 表格上方的搜索/过滤行：Card body 去掉内边距后由它补回来。 */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.search {
+  width: 280px;
+}
+
+.sourceSelect {
+  width: 150px;
+}
+
+/* 工具栏右侧的弱提示：宽屏补足空白，窄屏隐藏，不参与换行。 */
+.toolbarHint {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
+
+/* 底栏与凭据管理的配额条同一形态：浅底、上边框，左右内边距与卡片头对齐。 */
+.footer {
+  padding: 0 20px;
+  background: var(--color-fill-secondary);
+  border-top: 1px solid var(--color-border);
+}
+
+.cardAlert {
+  margin: 12px 20px;
+}
+
+/* 卡片正文已自带 20px 内边距，告警只补上方的间距，避免二次缩进。 */
+.myAlert {
+  margin-top: 12px;
+}
+
+.avatar {
+  flex: none;
+}
+
+/* 首列的头像 + 身份块：两个 flex 项都可收缩，长 open_id 走省略号。 */
+.feishuCell {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.identityName {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  align-items: center;
+  min-width: 0;
+  color: var(--color-text);
+}
+
+/* 姓名是唯一可能很长的字段：省略号收在名字上，右边的状态 Tag 始终可见。 */
+.identityNameText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.identityId {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.mono {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.secondary {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+/* 操作列的行内链接：去掉 antd 默认高度与内边距，和「更多」的 13px 文字对齐。 */
+.actionLink {
+  height: auto;
+  padding: 0;
+  font-size: 13px;
+}
+
+/* ── 抽屉 ── */
+
+.drawerHeader {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.drawerTitle {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.drawerBody {
+  padding: 16px 20px 20px;
+}
+
+.drawerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 详情标签统一窄列，值从同一条左边缘开始。 */
+.descriptions {
+  :global(.ant-descriptions-item-label) {
+    width: 84px;
+    font-size: 13px;
+    color: var(--color-text-tertiary);
+  }
+}
+
+.drawerCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+}
+
+.divider {
+  margin: 0;
+}
+
+.times {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-text-tertiary);
+}
+
+.preview {
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  background: var(--color-fill-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.staleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.sectionActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+.inlineBlock {
+  display: inline-block;
+}
+
+/* ── 窄屏 ── */
+
+@include respond-down('md') {
+  .card :global(.ant-card-head) {
+    padding: 16px 16px 6px;
+  }
+
+  .myCard :global(.ant-card-body) {
+    padding: 12px 16px 16px;
+  }
+
+  .toolbar {
+    padding: 12px 16px;
+  }
+
+  .search {
+    width: 100%;
+  }
+
+  .sourceSelect {
+    width: 100%;
+  }
+
+  .toolbarHint {
+    display: none;
+  }
+
+  .cardAlert {
+    margin: 12px 16px;
+  }
+
+  .footer {
+    padding: 0 16px;
+  }
+
+  .drawerHeader {
+    padding: 16px;
+  }
+
+  .drawerBody {
+    padding: 16px 16px 20px;
+  }
+}

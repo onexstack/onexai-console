@@ -1,0 +1,78 @@
+@import 'tailwindcss';
+@import 'antd/dist/reset.css';
+
+// Tailwind 断点对齐 Ant Design 六档（唯一事实来源见
+// @onex-console/ui/src/responsive/breakpoints.ts）。Tailwind 默认的
+// 640/1024/1280/1536 与 antd 不一致，不覆盖会让 `md:` 与
+// `@include respond-down('md')` 在 768–1024 之间互相打架。
+// 必须写在两条 `@import` 之后：Sass/CSS 要求 `@import` 在所有规则之前。
+@theme {
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+  --breakpoint-2xl: 1600px;
+}
+
+:root {
+  --primary-color: #1677ff;
+}
+
+/* 侧边栏菜单的文字与分组样式统一走 antd Menu 组件令牌
+   （见 `ui/theme/presets.ts` 的 `createSiderMenuTheme`），这里不再用全局选择器
+   覆盖，避免与令牌互相打架。 */
+
+html,
+body {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+
+  // 与 `ui/theme/tokens.ts` 的 `fontTokens.family` 保持一致。
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+
+  // 与火山引擎 AgentKit 控制台（Arco Design 全局 reset）一致：macOS/Retina 上
+  // 关掉次像素抗锯齿，文字比默认渲染细一档。属性可继承，写在这里即可覆盖侧栏、
+  // 顶栏、移动端抽屉、折叠后 portal 出去的浮层与全部页面正文——只作用于其中一块
+  // 会让同一屏里的文字粗细不一致。
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+}
+
+// antd 的 <App> 会在 #root 与页面之间插一层 `.ant-app`。它默认没有高度，
+// 于是内部的 `height: 100%` 会以 `auto` 为基准、整页只剩内容高度（底部露白）。
+.ant-app {
+  height: 100%;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Chrome 的自动填充会给输入框铺一层浅蓝底（#e8f0fe），与表单的白底/暗色主题
+// 不一致（例如「目标命名空间」选中一个被浏览器记住的空间后仍留着蓝底）。用
+// 与主题一致的内阴影盖掉，并让文字、光标跟随主题色。
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-text);
+  caret-color: var(--color-text);
+  /* stylelint-disable-next-line property-no-vendor-prefix -- Chrome 自动填充的底色只能靠前缀内阴影盖掉 */
+  -webkit-box-shadow: 0 0 0 1000px var(--color-bg-container) inset;
+  box-shadow: 0 0 0 1000px var(--color-bg-container) inset;
+  transition: background-color 9999s ease-in-out 0s;
+}

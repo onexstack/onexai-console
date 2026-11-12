@@ -1,0 +1,417 @@
+@use '../../ui/styles/mixins' as *;
+
+/* 资源新建/编辑页：步骤条对齐腾讯云 ~/22.png，字段区沿用火山引擎表单版式。
+   外层灰底、白色页头条、白色内容卡片与底部操作栏在 components/PageLayout。
+
+   步骤条不画底部横线；间距由卡片内边距（24px）与 `margin-bottom`（24px）提供。 */
+
+/* ── 创建方式切换 ───────────────────────────────────────────────────────── */
+
+.modeBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modeLabelText {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+/* ── 步骤条 ─────────────────────────────────────────────────────────────── */
+
+.steps {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* 用原生 button：一排文字 + 圆点，antd Button 的边框和高度会撑坏参考图的行高。 */
+.step {
+  display: inline-flex;
+  flex: none;
+  gap: 12px;
+  align-items: center;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: none;
+  border: 0;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+}
+
+.stepCircle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 50%;
+}
+
+.stepCheck {
+  font-size: 14px;
+}
+
+.stepLabel {
+  font-size: 16px;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+/* 已完成与当前步骤：主色实心圆 + 深色粗体标签。 */
+.stepDone .stepCircle,
+.stepCurrent .stepCircle {
+  color: #fff;
+  background: var(--color-primary);
+}
+
+.stepDone .stepLabel,
+.stepCurrent .stepLabel {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* 未到的步骤：浅灰圆 + 灰字。 */
+.stepTodo .stepCircle {
+  color: var(--color-text-tertiary);
+  background: var(--color-bg-tertiary, #f5f5f5);
+}
+
+.stepTodo .stepLabel {
+  color: var(--color-text-tertiary);
+}
+
+.stepArrow {
+  flex: none;
+  margin: 0 8px;
+  font-size: 12px;
+  color: var(--color-text-quaternary, rgb(0 0 0 / 25%));
+}
+
+/* ── 分区 ───────────────────────────────────────────────────────────────── */
+
+.section {
+  /* 最后一段下面留出和底栏之间的距离，滚动到底时不会贴住操作栏。 */
+  padding-bottom: 8px;
+  margin-bottom: 40px;
+
+  &:last-child {
+    margin-bottom: 8px;
+  }
+}
+
+/* MCP「工具与审批」的说明压成一句后保持单行，不因窗口变窄折成两行。 */
+.sectionNote {
+  :global(.ant-alert-title) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include respond-down('md') {
+      white-space: normal;
+    }
+  }
+}
+
+/* 主色竖条 + 分区标题：火山引擎每个配置段的起点。 */
+.sectionTitle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 24px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--color-text);
+
+  &::before {
+    flex: none;
+    width: 3px;
+    height: 16px;
+    content: '';
+    background: var(--color-primary);
+    border-radius: 1px;
+  }
+}
+
+/* ── 表单 ───────────────────────────────────────────────────────────────── */
+
+.form {
+  /* 与火山引擎表单一致：字段区不铺满整个内容宽度，右侧留白。 */
+  max-width: 900px;
+
+  /* 标签用正文色，必填星号由 antd 默认画在标签前（红色）。 */
+  :global(.ant-form-item-label > label) {
+    font-size: 14px;
+    color: var(--color-text);
+  }
+
+  /* 水平布局：必填与可选 label 共用同一条文字起始线。
+     星号移入左侧 gutter，不再参与行内布局；所有 label 统一留出这段 gutter，
+     可选项的文字才会和必填项文字左对齐（对齐火山引擎表单）。 */
+  &.horizontalForm {
+    :global(.ant-form-item-label > label) {
+      padding-inline-start: 12px;
+    }
+
+    :global(.ant-form-item-label > label.ant-form-item-required)::before {
+      position: absolute;
+      inset-inline-start: 0;
+      top: 50%;
+      margin: 0;
+      transform: translateY(-50%);
+    }
+  }
+
+  /* 参考图的行距：字段大约 24px 一档，没有大块空白。 */
+  :global(.ant-form-item) {
+    margin-bottom: 24px;
+  }
+
+  /* 说明文字紧跟在控件下方，和控件左边缘对齐。 */
+  :global(.ant-form-item-extra) {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--color-text-tertiary);
+  }
+}
+
+.error {
+  max-width: 900px;
+  margin-bottom: 16px;
+}
+
+/* ── MCP 连通性检查 ─────────────────────────────────────────────────────── */
+
+/* 挂在「工具与审批」字段区上方：先当场拨号拿到工具列表，再让用户挑工具。 */
+.connectivity {
+  max-width: 900px;
+  padding: 16px;
+  margin-bottom: 24px;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: 8px;
+}
+
+.connectivityHead {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+/* 左侧文案占满剩余宽度，右侧按钮不参与压缩。 */
+.connectivityText {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.connectivityTitle {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  color: var(--color-text);
+}
+
+/* 提示保持一行：文案已经压到一句，不再给固定 max-width 逼它折行。 */
+.connectivityHint {
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+
+  /* 窄屏放不下时恢复折行，宁可多一行也不要截断语义。 */
+  @include respond-down('md') {
+    white-space: normal;
+  }
+}
+
+/* 成功提示合并成一行，同样不允许折行。 */
+.connectivityAlert {
+  :global(.ant-alert-title) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include respond-down('md') {
+      white-space: normal;
+    }
+  }
+}
+
+/* ── 信息确认 ───────────────────────────────────────────────────────────── */
+
+.review {
+  max-width: 900px;
+}
+
+/* 多行文本：保留用户输入的换行。 */
+.reviewText {
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* JSON / 结构化配置：等宽、限高、保留换行。 */
+.reviewCode {
+  display: block;
+  max-height: 180px;
+  padding: 8px 12px;
+  overflow: auto;
+  font-family: var(--font-family-code, monospace);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  background: var(--color-code-bg, #f6f8fa);
+  border: 1px solid var(--color-code-border, #e2e8f0);
+  border-radius: 4px;
+}
+
+.reviewMasked,
+.reviewEmpty {
+  color: var(--color-text-tertiary);
+}
+
+/* ── Webhook 载荷模板说明 ─────────────────────────────────────────────── */
+
+.templateHelp {
+  margin-bottom: 16px;
+}
+
+.templateIntro {
+  margin-bottom: 12px;
+}
+
+.templateVars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.templateVarRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.templateVarLabel {
+  flex: 0 0 96px;
+  padding-top: 3px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.templateVarTag {
+  font-family: var(--font-family-code, monospace);
+  font-size: 12px;
+  background: var(--color-code-bg, #f6f8fa);
+  border: 1px solid var(--color-code-border, #e2e8f0);
+}
+
+.templateDivider {
+  margin: 14px 0 10px;
+}
+
+.templateExampleLabel {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.templateCopy {
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+.templateExample {
+  max-height: 260px;
+  padding: 10px 12px;
+  margin: 0;
+  overflow: auto;
+  font-family: var(--font-family-code, monospace);
+  font-size: 12px;
+  line-height: 1.6;
+  background: var(--color-code-bg, #f6f8fa);
+  border: 1px solid var(--color-code-border, #e2e8f0);
+  border-radius: 6px;
+}
+
+.secretHint {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+/* 一次性密钥：与表单输入框同宽的容器，内部是「掩码 + 眼睛 + 复制」。 */
+.secretValueBox {
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 11px;
+  background: var(--color-bg-container);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+}
+
+@include respond-down('lg') {
+  .steps {
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+
+  .step {
+    gap: 8px;
+  }
+
+  .stepCircle {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .stepLabel {
+    font-size: 14px;
+  }
+
+  .stepArrow {
+    margin: 0 4px;
+  }
+
+  .section {
+    margin-bottom: 28px;
+  }
+
+  .sectionTitle {
+    margin-bottom: 16px;
+  }
+
+  .form {
+    :global(.ant-form-item) {
+      margin-bottom: 20px;
+    }
+  }
+}

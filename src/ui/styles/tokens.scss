@@ -1,0 +1,239 @@
+// ============================================================
+// Design Tokens —— 单一令牌源（light + dark）
+// 全局 CSS 自定义属性，供非 antd 的自定义样式使用。
+// antd 组件侧由各应用的 ConfigProvider theme 接管。
+// 使用方式：
+//   color: var(--color-primary);
+//   padding: var(--spacing-md);
+// 暗色模式通过 <html data-theme="dark"> 切换（见主题切换逻辑）。
+// ============================================================
+
+:root {
+  // ─── 移动端基座 ──────────────────────────────────────────────────────────
+  // 安全区：viewport 已开 `viewport-fit=cover`（见 app-config 的 html.meta），
+  // 所以页面会铺到刘海与 Home 指示条下面。所有 `position: fixed` 的吸底元素
+  // （详情底部操作条、FloatingActionBar、吸底分页/操作条）都必须把这两个值算进去。
+  // 非刘海屏上 `env()` 取不到值，兜底 0px。
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+
+  // 布局尺寸。`--app-header-height` 与顶栏实际高度（64px）一致；移动端紧凑顶栏
+  // 用 `--mobile-header-height`。`--mobile-gutter` 是移动端页面左右内边距，
+  // 与顶栏的 12px 对齐。
+  --app-header-height: 64px;
+  --mobile-header-height: 56px;
+  --mobile-bottom-bar-height: 56px;
+  --mobile-gutter: 12px;
+
+  // 品牌色（对齐 onex-console 的 antd 默认蓝）
+  --color-primary: #1677ff;
+  --color-primary-hover: #4096ff;
+  --color-primary-light: #69b1ff;
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-error: #ff4d4f;
+  --color-info: #1677ff;
+
+  // 价格（全平台价格数字统一色）
+  --color-price: #ff4d4f;
+
+  // 会员等级三色（银 / 金 / 白金）
+  --color-tier-silver: #8c8c8c;
+  --color-tier-gold: #d48806;
+  --color-tier-platinum: #722ed1;
+
+  // 文本
+  --color-text: rgb(0 0 0 / 88%);
+  --color-text-secondary: rgb(0 0 0 / 65%);
+  --color-text-tertiary: rgb(0 0 0 / 45%);
+  --color-text-quaternary: rgb(0 0 0 / 25%);
+
+  // 边框 / 背景
+  --color-border: #d9d9d9;
+  --color-border-light: #f0f0f0;
+  --color-border-secondary: #f0f0f0;
+  --color-bg: #fff;
+  --color-bg-container: #fff;
+  --color-bg-secondary: #fafafa;
+  --color-bg-tertiary: #f5f5f5;
+
+  // 页面底色（控制台各页内容区）。角色令牌，勿与三级色混用：控制台对齐 miniblog 的
+  // #f0f2f5，三级色继续留给卡片内的填充块。
+  --color-bg-page: #f0f2f5;
+
+  // 侧边栏底色 / 文字色，对齐火山引擎 AgentKit 控制台（浅紫灰 + 近黑）。
+  // 菜单项自己的悬停 / 选中底色走 antd Menu 组件令牌，见 `ui/theme/tokens.ts`
+  // 的 `siderTokens`（同一套色板，改一处必须同步另一处）。
+  --color-sider-bg: #f6f6fb;
+  --color-sider-text: #0c0d0e;
+
+  // 控制台框架（顶栏 + 侧栏）里的图标按钮悬停底色。不能沿用
+  // `--color-bg-tertiary`：它在浅紫灰底上几乎同色，悬停没有反馈。
+  // 与 `siderTokens.light.itemHoverBg`（菜单项悬停）同值，改一处要同步。
+  --color-chrome-hover-bg: #f0f0f6;
+  --color-fill-secondary: #fafafa;
+  --color-primary-bg: #e6f4ff;
+
+  // 代码块（fenced / 行内共用）。**不能挂在 `--color-bg-secondary` 上**：暗色下它
+  // 与 `--color-bg-container` 同值，代码块会糊进卡片里。取值对齐 GitHub 主题底色，
+  // 与服务端 chroma 的配色同源。
+  --color-code-bg: #f6f8fa;
+  --color-code-border: #e2e8f0;
+
+  // 原生 UI 跟随主题；属性由首帧脚本/宿主写在 <html> 上。
+  color-scheme: light;
+
+  // 评论输入框（发布 / 回复 / 行内编辑三处共用）。单独一个令牌，不挂在
+  // `--color-bg-tertiary` 上：帖子卡片的底色也是三级色，两者同值时输入框会糊进卡片。
+  // **只用这一个值、暗色块里不覆盖**：亮暗都取 #f1f5f9，即暗色下也是浅底输入框
+  // —— 这是指定的效果，不是漏写暗色值。
+  --color-comment-input-bg: #f1f5f9;
+
+  // 评论输入框里的字（含光标）。同理**只在亮色块定义**：底色亮暗都浅，字色就得
+  // 亮暗都深。用 `--color-text` 会在暗色下变成白字打在浅底上（`/kb/` 讨论区实测）。
+  --color-comment-input-text: rgb(0 0 0 / 88%);
+
+  // 聊天气泡
+  --color-bubble-received: #e4e6e9;
+  --color-bubble-sent: #f3f7ff;
+
+  // 间距
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  // 页面左右内边距：页头、正文、底栏共用同一条左边缘（对齐火山引擎控制台）。
+  // `<992px` 时收到 16px，见文件末尾的媒体查询。
+  --page-gutter: 24px;
+
+  // 圆角
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+
+  // 阴影（5 级）
+  --shadow-xs: 0 1px 4px rgb(0 0 0 / 4%);
+  --shadow-sm: 0 2px 8px rgb(0 0 0 / 6%);
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 8%);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 12%);
+  --shadow-xl: 0 12px 32px rgb(0 0 0 / 16%);
+
+  // 渐变预设
+  --gradient-primary: linear-gradient(135deg, #1677ff 0%, #4096ff 100%);
+  --gradient-success: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
+  --gradient-warning: linear-gradient(135deg, #faad14 0%, #ffc53d 100%);
+  --gradient-error: linear-gradient(135deg, #ff4d4f 0%, #ff7875 100%);
+  --gradient-sunset: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #fdc830 100%);
+  --gradient-ocean: linear-gradient(135deg, #1677ff 0%, #36cfc9 100%);
+
+  // 动画
+  --transition-duration: 0.2s;
+  --transition-fast: 0.1s;
+  --transition-slow: 0.3s;
+  --transition-easing: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  // z-index 层级
+  --z-index-dropdown: 1050;
+  --z-index-modal: 1000;
+  --z-index-drawer: 1000;
+  --z-index-notification: 1010;
+  --z-index-message: 1010;
+  --z-index-tooltip: 1060;
+  --z-index-popover: 1030;
+}
+
+// 暗色令牌。写成 mixin 是因为它要在两个作用域里各展开一次：
+//   - `[data-theme='dark']`：控制台与子应用（首帧脚本写好属性）；
+//   - `@media (prefers-color-scheme: dark) :root:not([data-theme])`：`/p/`、`/prd/`
+//     这类没有页头脚本、但会挂评论岛与内容详情岛的页面。
+@mixin dark-tokens {
+  // 品牌色（暗色下提亮，取值对齐 onex-console）
+  --color-primary: #4096ff;
+  --color-primary-hover: #69b1ff;
+  --color-primary-light: #69b1ff;
+  --color-success: #49aa19;
+  --color-warning: #d89614;
+  --color-error: #dc4446;
+  --color-info: #4096ff;
+
+  // 价格（暗色下略调整）
+  --color-price: #dc4446;
+
+  // 会员等级三色（暗色下提亮）
+  --color-tier-silver: #9e9e9e;
+  --color-tier-gold: #e0a226;
+  --color-tier-platinum: #9254de;
+
+  // 文本
+  --color-text: rgb(255 255 255 / 85%);
+  --color-text-secondary: rgb(255 255 255 / 65%);
+  --color-text-tertiary: rgb(255 255 255 / 45%);
+  --color-text-quaternary: rgb(255 255 255 / 25%);
+
+  // 边框 / 背景
+  --color-border: #424242;
+  --color-border-light: #303030;
+  --color-border-secondary: #303030;
+  --color-bg: #141414;
+  --color-bg-container: #1d1d1d;
+  --color-bg-secondary: #1d1d1d;
+  --color-bg-tertiary: #262626;
+  --color-bg-page: #262626;
+  --color-fill-secondary: #1d1d1d;
+  --color-primary-bg: #111a2c;
+
+  // 侧边栏（暗色）。与亮色同构：比内容区深一档的冷灰；菜单令牌见
+  // `ui/theme/tokens.ts` 的 `siderTokens.dark`，改一处必须同步另一处。
+  --color-sider-bg: #17171c;
+  --color-sider-text: rgb(255 255 255 / 88%);
+  --color-chrome-hover-bg: #202027;
+
+  // 代码块：比卡片（#1d1d1d）再深一档，与服务端 chroma 的 `#0d1117` 同族。
+  --color-code-bg: #161b22;
+  --color-code-border: #30363d;
+
+  color-scheme: dark;
+
+  // 聊天气泡
+  --color-bubble-received: #2d2d2d;
+  --color-bubble-sent: #111a2c;
+
+  // 阴影（暗色模式加深）
+  --shadow-xs: 0 1px 4px rgb(0 0 0 / 12%);
+  --shadow-sm: 0 2px 8px rgb(0 0 0 / 20%);
+  --shadow-md: 0 4px 16px rgb(0 0 0 / 28%);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 36%);
+  --shadow-xl: 0 12px 32px rgb(0 0 0 / 45%);
+
+  // 渐变预设（暗色下略调整）
+  --gradient-primary: linear-gradient(135deg, #4096ff 0%, #69b1ff 100%);
+  --gradient-success: linear-gradient(135deg, #49aa19 0%, #6abe39 100%);
+  --gradient-warning: linear-gradient(135deg, #d89614 0%, #f0b429 100%);
+  --gradient-error: linear-gradient(135deg, #dc4446 0%, #ff7875 100%);
+  --gradient-sunset: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #fdc830 100%);
+  --gradient-ocean: linear-gradient(135deg, #4096ff 0%, #36cfc9 100%);
+}
+
+[data-theme='dark'] {
+  @include dark-tokens;
+}
+
+// 没有显式偏好时的系统兜底（与服务端页面的 `prefers-color-scheme` 语义一致）。
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include dark-tokens;
+  }
+}
+
+// 页面 gutter 跟随 `DefaultLayout` 的紧凑断点（<992px）收窄一档。
+@media (width < 992px) {
+  :root {
+    --page-gutter: 16px;
+  }
+}

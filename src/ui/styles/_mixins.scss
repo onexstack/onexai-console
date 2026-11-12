@@ -1,0 +1,129 @@
+@use 'variables' as *;
+
+// `@forward` 只负责出口，本文件内要用 `respond-down` 还得自己 `@use` 一次。
+@use 'breakpoints' as *;
+
+// 断点 mixin / 变量一并从 `mixins` 出口暴露：业务文件只需要一行
+// `@use '@onex-console/ui/src/styles/mixins' as *;` 就能拿到变量、mixin 与断点。
+@forward 'breakpoints';
+
+// 文本溢出省略
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// 多行文本溢出省略
+@mixin ellipsis-lines($lines: 2) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+
+// Flex 居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex 两端对齐
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// 清除浮动
+@mixin clearfix {
+  &::after {
+    clear: both;
+    display: table;
+    content: '';
+  }
+}
+
+// 响应式断点已移到 `_breakpoints.scss`（`respond-down` / `respond-up` /
+// `respond-between` / `touch-device`），并通过上面的 `@forward` 暴露。
+// 旧的 `respond-to` 是「区间」语义且 0 处调用，已删除，避免两套断点并存。
+
+// 悬停效果。
+// hover 只在**真的能 hover** 的设备上启用：触屏上 `:hover` 会在点击后粘住，
+// 卡片会停在抬起状态，看起来像被选中了。触屏改用 `:active` 的按压反馈。
+@mixin hover-lift {
+  transition:
+    transform $transition-duration $transition-timing,
+    box-shadow $transition-duration $transition-timing;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      box-shadow: $shadow-md;
+      transform: translateY(-2px);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// 卡片样式
+@mixin card-style {
+  background: $bg-color;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+}
+
+// ─── 新建/编辑/详情页的「双卡片」版式（参考腾讯云 TKE 创建页） ───────────────
+// 页面 = 白色页头条 + 灰色滚动区 + 白色内容卡（+ 可选吸底操作栏）。
+// 页头与底栏都在滚动区之外，靠 flex 固定；只有 `.body` 滚动。
+// 三个 mixin 供 `PageLayout` 与 `DetailShell` 共用，避免两处视觉规格漂移。
+
+// 页头条：白底、全宽、底部轻阴影。
+@mixin page-header-bar {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  background: var(--color-bg-container, #fff);
+  box-shadow: var(--shadow-xs, 0 1px 4px rgb(0 0 0 / 4%));
+}
+
+// 唯一滚动区：灰底从卡片四周露出。
+@mixin page-scroll-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: 16px var(--page-gutter) 24px;
+  overflow-y: auto;
+
+  @include respond-down('lg') {
+    padding-top: 12px;
+  }
+
+  @include respond-down('md') {
+    padding-bottom: 16px;
+  }
+}
+
+// 内容卡片：白底 + 1px 描边 + 8px 圆角 + 24px 内边距；内容短时撑满滚动区。
+// 不要加 `overflow: hidden` / `contain`：智能创建的 sticky 摘要与 review 操作条
+// 需要相对 `.body` 吸顶，加了会失效。
+@mixin page-card-surface {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  min-width: 0;
+  padding: 24px;
+  background: var(--color-bg-container, #fff);
+  border: 1px solid var(--color-border-secondary, #f0f0f0);
+  border-radius: var(--radius-md, 8px);
+
+  @include respond-down('md') {
+    padding: 16px;
+    border-radius: 6px;
+  }
+}

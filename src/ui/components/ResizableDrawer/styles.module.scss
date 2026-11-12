@@ -1,0 +1,58 @@
+/* 拖拽时 antd 的 content-wrapper 带着 `transition: all`，宽度会以缓动追着
+   指针走；关掉过渡让宽度跟手。选择器特异性与 antd 打平，只能上 !important。 */
+.dragging :global(.ant-drawer-content-wrapper) {
+  transition: none !important;
+  will-change: width;
+}
+
+/* 抽屉边缘的拖拽手柄：10px 命中区，跨在抽屉边缘上（只向抽屉内占 5px）。
+   默认是一条很淡的竖线，hover / 聚焦 / 拖拽时变主色，避免用户找不到。
+   pointer-events 必须显式给：.ant-drawer 根节点是 none，只靠继承不保险。 */
+.handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  width: 10px;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: col-resize;
+  user-select: none;
+  background: transparent;
+
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: 2px;
+    height: 40px;
+    content: '';
+    background: var(--color-border);
+    border-radius: 1px;
+    opacity: 0.6;
+    transform: translateY(-50%);
+    transition:
+      background 0.15s ease,
+      opacity 0.15s ease;
+  }
+
+  &:hover::after,
+  &:focus-visible::after,
+  &.handleDragging::after {
+    background: var(--color-primary);
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+/* 右侧抽屉的手柄在左缘；左侧抽屉的手柄在右缘。 */
+.handleStart {
+  left: -5px;
+}
+
+.handleEnd {
+  right: -5px;
+}

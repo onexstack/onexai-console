@@ -1,0 +1,18 @@
+<!--
+  OneX 智能体标识 · 电光紫 `#7c3aed`
+
+  生成式 AI 最通用的那个色相（Copilot / Linear / Midjourney 一路都是它），
+  承担的是「生成 / 想象力」的语义。它比现行的 `#8b5cf6` 更深、更沉 ——
+  那支偏粉，在浅色列表里像一颗糖果；这一支是单色相的平涂，没有渐变也没有发光。
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" fill="#7c3aed" />
+  <g transform="translate(11 11) scale(2.1) rotate(45 10 10)">
+    <path d="M10 0.5L11.6 8.4L19.5 10L11.6 11.6L10 19.5L8.4 11.6L0.5 10L8.4 8.4Z" fill="#ffffff" />
+    <path
+      d="M15.5 2.5L16.1 4.9L18.5 5.5L16.1 6.1L15.5 8.5L14.9 6.1L12.5 5.5L14.9 4.9Z"
+      fill="#ffffff"
+      fill-opacity="0.8"
+    />
+  </g>
+</svg>

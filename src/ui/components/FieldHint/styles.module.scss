@@ -1,0 +1,9 @@
+/* 问号图标：与 antd 自带的表单提示图标（`.ant-form-item-tooltip`）同色、同间距，
+   两类字段说明（表驱动详情的 hint 与 antd 表单的 tooltip）看起来才是同一样东西。
+   取值来源见 index.tsx。 */
+.icon {
+  flex: none;
+  margin-inline-start: 4px;
+  color: var(--color-text-tertiary, rgb(0 0 0 / 45%));
+  cursor: help;
+}

@@ -1,0 +1,21 @@
+/* 掩码 / 明文 / 按钮同一行，与凭据页的 SecretKey 列保持同一副长相。 */
+.row {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+
+/* 固定宽度的掩码与明文，字号与正文一致。 */
+.mask {
+  font-size: 13px;
+  color: var(--color-text);
+  word-break: break-all;
+}
+
+/* 「未配置」「不可查看」「读取中…」这类说明性文字。 */
+.hint {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  cursor: default;
+}

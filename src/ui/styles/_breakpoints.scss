@@ -1,0 +1,71 @@
+/**
+ * 全站唯一的响应式断点（与 Ant Design 的六档一致）。
+ *
+ * TypeScript 侧的同一份数字在 `packages/ui/src/responsive/breakpoints.ts`；
+ * 两边由 `breakpoints.test.tsx` 钉住，改一处必须改另一处。
+ *
+ * 用法（业务 `*.module.scss` 首行）：
+ *
+ * ```scss
+ * @use '@onex-console/ui/src/styles/mixins' as *;
+ *
+ * .card {
+ *   display: grid;
+ *   grid-template-columns: 1fr 320px;
+ *
+ *   @include respond-down('md') {
+ *     grid-template-columns: minmax(0, 1fr);
+ *   }
+ * }
+ * ```
+ *
+ * 只准用 `respond-down` / `respond-up`；不要再写字面量 `@media (width <= 900px)`。
+ * 移动端边界统一是 `respond-down('md')`（`< 768px`），平板/桌面分界是
+ * `respond-down('lg')`（`< 992px`）。
+ */
+
+@use 'sass:map';
+
+$breakpoints: (
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1600px,
+) !default;
+
+@function breakpoint-min($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "未知断点 `#{$name}`。可用值：#{map.keys($breakpoints)}。";
+  }
+
+  @return map.get($breakpoints, $name);
+}
+
+/** `>= $name`：桌面优先写法。 */
+@mixin respond-up($name) {
+  @media (width >= breakpoint-min($name)) {
+    @content;
+  }
+}
+
+/** `< $name`：移动优先写法。移动端 = `respond-down('md')`。 */
+@mixin respond-down($name) {
+  @media (width < breakpoint-min($name)) {
+    @content;
+  }
+}
+
+/** `[from, to)` 区间。 */
+@mixin respond-between($from, $to) {
+  @media (breakpoint-min($from) <= width < breakpoint-min($to)) {
+    @content;
+  }
+}
+
+/** 触屏设备（无 hover、粗指针）。用于把 hover 才出现的操作改为常显。 */
+@mixin touch-device {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}

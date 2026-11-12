@@ -1,0 +1,9 @@
+/* `max-width` 由组件按单元格传入（内联 style），这里只负责「超宽就截断」。
+   `vertical-align: bottom` 让它在与 Tag / 链接同行时基线不往上浮。 */
+.text {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+  white-space: nowrap;
+}

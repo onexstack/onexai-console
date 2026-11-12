@@ -1,0 +1,128 @@
+@use '../../../ui/styles/mixins' as *;
+@use './tokens' as *;
+
+.panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.search {
+  flex-shrink: 0;
+  padding: 0 20px 8px;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  padding: 0 12px 16px;
+  overflow-y: auto;
+}
+
+.empty {
+  padding: 40px 16px;
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.groupLabel {
+  padding: 10px 8px 4px;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+
+  &:hover {
+    background: var(--color-bg-secondary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $agent-accent;
+    outline-offset: 1px;
+  }
+}
+
+.rowActive {
+  background: var(--color-bg-tertiary);
+}
+
+.rowMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.rowTitle {
+  @include ellipsis;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.rowPreview {
+  @include ellipsis;
+
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.rowAside {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center end;
+  width: 84px;
+}
+
+.rowTime {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
+
+.rowActions {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.row:hover .rowActions,
+.row:focus-within .rowActions {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .rowTime {
+    display: none;
+  }
+
+  .rowActions {
+    opacity: 1;
+  }
+}
+
+@include respond-down('md') {
+  .search {
+    padding: 0 16px 8px;
+  }
+
+  .body {
+    padding: 0 8px 16px;
+  }
+
+  .rowAside {
+    width: 68px;
+  }
+}

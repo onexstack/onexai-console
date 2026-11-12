@@ -1,0 +1,24 @@
+@use '../../ui/styles/mixins' as *;
+
+/* 与页面标题同一行、靠右摆放（见 PageHeader 的 `titleExtra`）。
+   定宽而不是撑满：它是筛选器，不该跟着标题行的剩余宽度伸缩。 */
+.root {
+  display: flex;
+  flex: 0 1 auto;
+  width: 240px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.select {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 窄屏下标题行会换行，选择器独占一行、铺满可用宽度。 */
+@include respond-down('md') {
+  .root {
+    width: 100%;
+    max-width: 320px;
+  }
+}

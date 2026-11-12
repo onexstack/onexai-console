@@ -1,0 +1,149 @@
+/* 资源列表标准搜索栏（SearchTagInput）的样式。
+   原属 ResourcePage/styles.module.scss，组件抽出后随之迁移；调用方不再覆盖。 */
+
+/* ── SearchTagInput (110.png / 111.png) ── */
+.searchBox {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 0;
+  min-height: 32px;
+  padding: 3px 8px 3px 10px;
+  cursor: text;
+  background: var(--color-bg-container, #fff);
+  border: 1px solid var(--color-border, #d9d9d9);
+  border-radius: 6px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  &:focus-within {
+    border-color: var(--color-primary, #1677ff);
+    box-shadow: 0 0 0 2px rgb(22 119 255 / 10%);
+  }
+}
+
+.searchBoxIcon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  margin-right: 8px;
+  color: var(--color-text-tertiary, rgb(0 0 0 / 45%));
+}
+
+/**
+ * 有多个搜索字段时，左侧图标是一颗**按钮**：点它打开字段下拉（输入框里已有文字
+ * 时也能换字段，且不会清掉已输入的内容）。
+ *
+ * 按钮自带的边框 / 背景 / 内边距必须复位，否则搜索框里会多出一颗小方块。
+ */
+.searchBoxIconButton {
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  &:hover {
+    color: var(--color-primary, #1677ff);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #1677ff);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+.searchBoxContent {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  min-width: 0;
+}
+
+.searchTag {
+  margin: 0;
+  font-size: 12px;
+}
+
+.searchInputWrapper {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-width: 120px;
+}
+
+/**
+ * 输入框前的字段名（「名称:」）。它是一个**按钮**：点它切换检索字段。
+ *
+ * 只在运营**显式选过字段**时才出现 —— 描述符声明的默认字段不画出来（它只决定
+ * 回车提交到哪），否则删掉同名标签后这个空前缀会再冒出来，看起来像 key 删不掉。
+ *
+ * 按钮自带的边框 / 背景 / 内边距必须全部复位，否则搜索框里会冒出一颗小方块，
+ * 看起来像另一个动作而不是「这一笔输入属于谁」。字体与颜色与输入框同一档，
+ * 只靠字重和下划线区分「可点」。
+ */
+.pendingFieldLabel {
+  padding: 0;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+  white-space: nowrap;
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  &:hover {
+    color: var(--color-primary, #1677ff);
+    text-decoration: underline;
+  }
+}
+
+.searchInputNative {
+  flex: 1;
+  min-width: 80px;
+  padding: 0;
+  font-size: 13px;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+  outline: none;
+  background: transparent;
+  border: none;
+
+  &::placeholder {
+    color: var(--color-text-quaternary, rgb(0 0 0 / 25%));
+  }
+}
+
+.searchDropdownPanel {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 1050;
+  overflow: hidden;
+  background: var(--color-bg-container, #fff);
+  border: 1px solid var(--color-border-secondary, #f0f0f0);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+}
+
+.searchDropdownTitle {
+  padding: 7px 14px 5px;
+  font-size: 12px;
+  color: var(--color-text-tertiary, rgb(0 0 0 / 45%));
+}
+
+.searchDropdownItem {
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--color-text, rgb(0 0 0 / 88%));
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-fill-secondary, #fafafa);
+  }
+}

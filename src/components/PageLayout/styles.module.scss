@@ -1,0 +1,72 @@
+/* 整页外壳：灰底 + 白色页头条 + 白色内容卡 + 吸底操作栏（腾讯云创建页版式）。
+   页头规格在 `@/ui/components/PageHeader`，卡片/滚动区规格在
+   `@/ui/styles/mixins` 的 `page-header-bar` / `page-scroll-body` / `page-card-surface`。 */
+
+@use '../../ui/styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--color-bg-page);
+}
+
+.headerBar {
+  @include page-header-bar;
+}
+
+/* 内容区自己滚动，页头与底部操作栏因此始终可见。 */
+.body {
+  @include page-scroll-body;
+}
+
+/* 白色内容卡：与页头条一起构成「双卡片」。 */
+.panel {
+  @include page-card-surface;
+}
+
+.loading {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 64px 0;
+}
+
+/* 底栏：白底、顶部一条浅灰分隔线，按钮配色由主题令牌决定。
+   这条线是吸底操作栏的分隔线，不是页头线。 */
+.footer {
+  display: flex;
+  flex: none;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px var(--page-gutter);
+  background: var(--color-bg-container);
+  border-top: 1px solid var(--color-border-secondary);
+}
+
+/* 火山引擎表单页的底栏按钮靠右；旧页面继续用默认的靠左排布。 */
+.footerEnd {
+  justify-content: flex-end;
+}
+
+.footerActions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.footerMeta {
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+}
+
+@media (width <= 991px) {
+  .footer {
+    flex-wrap: wrap;
+  }
+}

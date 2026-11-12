@@ -1,0 +1,500 @@
+@use '../../ui/styles/mixins' as *;
+
+.page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+/* ─── 页头：业务线 / 环境标识 ─────────────────────────────────────────── */
+
+.pageHeader {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bizLine {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.bizLabel {
+  flex: 0 0 auto;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.bizSelect {
+  width: 300px;
+}
+
+.envInfo {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 24px;
+  align-items: center;
+}
+
+.envGroup {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.envLabel {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.envBadge {
+  padding: 1px 10px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.teamGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.35;
+}
+
+.teamName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.teamRole {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+/* ─── 主体：左对话列表 + 右会话区 ────────────────────────────────────── */
+
+.body {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+  min-height: 0;
+}
+
+.convPanel {
+  display: flex;
+  flex: 0 0 300px;
+  flex-direction: column;
+  min-height: 0;
+  padding: 20px 0 12px;
+  background: var(--color-bg-container);
+  border: 1px solid var(--color-border-light);
+  border-radius: 12px;
+  box-shadow: var(--shadow-xs);
+}
+
+.convHead {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px 12px;
+}
+
+.convTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
+.convList {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 8px;
+  overflow-y: auto;
+}
+
+.convItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 10px 12px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  border-radius: 8px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-bg-tertiary);
+  }
+}
+
+.convItemActive {
+  background: var(--color-primary-bg);
+  border-left-color: var(--color-primary);
+
+  &:hover {
+    background: var(--color-primary-bg);
+  }
+}
+
+.convItemTop {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.convItemTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.convItemTime {
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.convItemSummary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.convFooter {
+  flex: 0 0 auto;
+  padding: 10px 20px 0;
+  margin-top: 8px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.allConversations {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+
+  &:hover {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ─── 欢迎区 ──────────────────────────────────────────────────────────── */
+
+.hero {
+  flex: 0 0 auto;
+  padding: 8px 4px 0;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-text);
+}
+
+.heroSub {
+  margin: 2px 0 16px;
+  font-size: 20px;
+  color: var(--color-text-secondary);
+}
+
+.suggestion {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 20px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: rgb(250 173 20 / 8%);
+  border: 1px solid rgb(250 173 20 / 25%);
+  border-radius: 12px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgb(250 173 20 / 14%);
+  }
+}
+
+.suggestionBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.suggestionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ad6800;
+}
+
+.suggestionDesc {
+  font-size: 13px;
+  color: #ad6800;
+}
+
+.suggestionArrow {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: #fff;
+  background: #1f2937;
+  border-radius: 50%;
+}
+
+/* ─── 会话卡片 ────────────────────────────────────────────────────────── */
+
+.chatCard {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  padding: 20px;
+  background: var(--color-bg-container);
+  border: 1px solid var(--color-border-light);
+  border-radius: 12px;
+  box-shadow: var(--shadow-xs);
+}
+
+.messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 120px;
+  padding: 4px 2px 16px;
+  overflow-y: auto;
+}
+
+.emptyHint {
+  margin: auto;
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+}
+
+.msgRow {
+  display: flex;
+}
+
+.msgRowUser {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: 72%;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  border-radius: 10px;
+}
+
+.bubbleAi {
+  color: var(--color-text);
+  background: var(--color-primary-bg);
+}
+
+.bubbleUser {
+  color: var(--color-text);
+  background: var(--color-bg-tertiary);
+}
+
+.typing {
+  font-size: 13px;
+  color: var(--color-text-tertiary);
+}
+
+/* ─── 模型 / Skill / 知识库 / MCP ────────────────────────────────────── */
+
+.metaRow {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.metaField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.metaLabel {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.debugBar {
+  flex: 0 0 auto;
+  margin-top: 12px;
+}
+
+.debugToggle {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.debugLog {
+  max-height: 140px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  overflow-y: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-code-border);
+  border-radius: 8px;
+}
+
+.debugLine {
+  display: flex;
+  gap: 8px;
+}
+
+.debugTime {
+  flex: 0 0 auto;
+  color: var(--color-text-tertiary);
+}
+
+.debugEmpty {
+  color: var(--color-text-tertiary);
+}
+
+/* ─── 输入区 ──────────────────────────────────────────────────────────── */
+
+.composerBlock {
+  flex: 0 0 auto;
+  margin-top: 16px;
+}
+
+.composerLabel {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.composer {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.composerInput {
+  flex: 1;
+  min-width: 0;
+}
+
+.sendBtn {
+  flex: 0 0 auto;
+  height: 44px;
+  padding: 0 22px;
+}
+
+/* 暗色下黄色的标题字会糊进浅黄底里，换成主题的警告色。 */
+:global([data-theme='dark']) .suggestionTitle,
+:global([data-theme='dark']) .suggestionDesc {
+  color: var(--color-warning);
+}
+
+/* ─── 窄屏：对话列表移到上方，指标改成两列 ───────────────────────────── */
+
+@include respond-down('lg') {
+  .pageHeader {
+    align-items: flex-start;
+  }
+
+  .envInfo {
+    display: none;
+  }
+
+  .bizLine {
+    width: 100%;
+  }
+
+  .bizSelect {
+    flex: 1;
+    width: auto;
+  }
+
+  .body {
+    flex-direction: column;
+  }
+
+  .convPanel {
+    flex: 0 0 auto;
+    max-height: 240px;
+  }
+
+  .heroTitle {
+    font-size: 26px;
+  }
+
+  .heroSub {
+    font-size: 17px;
+  }
+
+  .chatCard {
+    padding: 14px;
+  }
+
+  .metaRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bubble {
+    max-width: 88%;
+  }
+}

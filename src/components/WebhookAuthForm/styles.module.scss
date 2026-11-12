@@ -1,0 +1,20 @@
+/* 鉴权控件：外层 Form.Item 已经有标签，这里只负责纵向间距。 */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hint {
+  color: var(--text-secondary, rgb(0 0 0 / 45%));
+  font-size: 12px;
+  line-height: 18px;
+}

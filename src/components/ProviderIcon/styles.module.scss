@@ -1,0 +1,25 @@
+.icon {
+  flex: none;
+  object-fit: contain;
+}
+
+/* 单色品牌（OpenAI、Ollama）的 SVG 用 currentColor，但作为 <img> 引入时
+   currentColor 会解析成黑色。暗色主题下反相，保证仍有足够对比度。 */
+.mono {
+  :global([data-theme='dark']) & {
+    filter: invert(1);
+  }
+}
+
+/* 未知提供方：首字母兜底，尺寸与品牌图标一致。 */
+.fallback {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-text-secondary, rgb(0 0 0 / 65%));
+  background: var(--color-bg-tertiary, #f5f5f5);
+  border-radius: 4px;
+}

@@ -1,0 +1,36 @@
+/* 端点配置控件：整块嵌在一个 Form.Item 里，所以只负责内部间距。 */
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* 内层 Form.Item 不占整行：它们是标签 + 控件的紧凑组合，由外层的 Col 决定宽度。 */
+.item {
+  margin-bottom: 12px;
+}
+
+/* 高级连接设置折叠区：与上下字段保持同一段间距。 */
+.advanced {
+  margin-bottom: 12px;
+}
+
+.hint {
+  margin-left: 8px;
+  color: var(--text-secondary, rgb(0 0 0 / 45%));
+  font-size: 12px;
+}
+
+.headers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.headerRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) auto;
+  gap: 8px;
+  align-items: center;
+}
