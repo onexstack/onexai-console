@@ -11,8 +11,9 @@ vi.mock('./queryClient', () => ({
   queryClient: { invalidateQueries: vi.fn() },
 }));
 
+import { request } from './client';
 import { queryClient } from './queryClient';
-import { getResourceDef, invalidateAgentViews } from './resourceDefs';
+import { fetchAllRows, getResourceDef, invalidateAgentViews } from './resourceDefs';
 
 const def = getResourceDef('cluster-agent-bindings');
 if (!def?.decode || !def.encode) {
@@ -127,6 +128,16 @@ describe('agent binding codec', () => {
       'update'
     );
     expect((body.spec as Record<string, unknown>).commands).toEqual(['pod']);
+  });
+});
+
+describe('bare list endpoints', () => {
+  it('treats a null answer as the empty list', async () => {
+    // The chat apiserver answered null for an empty roster because a nil slice
+    // marshals to null; the loader must not index that as an envelope.
+    vi.mocked(request).mockResolvedValueOnce(null);
+
+    await expect(fetchAllRows('oncall-groups')).resolves.toEqual([]);
   });
 });
 

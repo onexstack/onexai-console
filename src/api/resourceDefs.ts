@@ -725,6 +725,9 @@ async function fetchAllServer<T>(def: ResourceDef<T>): Promise<T[]> {
     method: 'GET',
     params: def.listMode === 'offset' ? { offset: 0, limit: 0 } : undefined,
   });
+  // A bare list endpoint answers null when it has no rows (a nil Go slice
+  // marshals to null). That is the empty list, not an envelope to index.
+  if (data == null) return [];
   if (Array.isArray(data)) return data.map(row => (def.decode ? def.decode(row) : row)) as T[];
   const envelope = data as Record<string, unknown>;
   const rows = (envelope[def.listKey] ?? []) as Record<string, unknown>[];
